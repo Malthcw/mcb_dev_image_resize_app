@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,11 +6,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crop Image Before Upload</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+
+    <style>
+        /* Center all content */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Style the image upload input */
+        #imageInput {
+            margin-bottom: 20px;
+        }
+
+        /* Center and style image preview and crop container */
+        #imagePreview,
+        #croppedImagePreview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            border: 2px dashed #ddd;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        /* Hide the cropping modal but center buttons when visible */
+        #cropModal {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        /* Style buttons */
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+
+        /* Center and style the upload form */
+        #uploadForm {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Adjust width of the image previews */
+        img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>Upload and Crop Image</h1>
+    <h1>Crop and Upload Image</h1>
 
     <!-- Image Upload Input -->
     <input type="file" id="imageInput" accept="image/*">
@@ -106,11 +182,11 @@
         const croppedImageInput = document.getElementById('croppedImageInput');
 
         // Event listener for when user selects an image
-        imageInput.addEventListener('change', function (event) {
+        imageInput.addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     imageToCrop.src = e.target.result;
                     imagePreview.style.display = 'block';
                     cropModal.style.display = 'block';
@@ -120,7 +196,7 @@
                         cropper.destroy(); // Destroy previous instance
                     }
                     cropper = new Cropper(imageToCrop, {
-                        aspectRatio: 1, // Fixed aspect ratio
+                        aspectRatio: 16 / 9, // Fixed aspect ratio
                         viewMode: 1, // Strict crop view
                         autoCropArea: 1, // Auto crop size based on the image
                         cropBoxResizable: false, // Disable resizing of the crop box
@@ -130,7 +206,7 @@
                             // Set a fixed crop box size after initializing the cropper
                             const cropperInstance = this.cropper;
                             cropperInstance.setCropBoxData({
-                                width: 300,  // Fixed width
+                                width: 300, // Fixed width
                                 height: 300, // Fixed height
                             });
                         },
@@ -141,9 +217,9 @@
         });
 
         // Event listener for cropping the image
-        cropButton.addEventListener('click', function () {
+        cropButton.addEventListener('click', function() {
             const canvas = cropper.getCroppedCanvas({
-                width: 300,  // Set output width
+                width: 300, // Set output width
                 height: 300, // Set output height
             });
 
